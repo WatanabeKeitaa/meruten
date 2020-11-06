@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="components/loader.js"></script>
+    <script>
+        //
+        // TODO: Write JavaScript code here
+        //
+    </script>
+</head>
+<body>
+  <h1>面接</h1>
+    <!-- パターン選択 -->
+    <div id='bamen' style="display:block">
+        <div class="go"><button class="button" onclick="pattern1()">日程調整のお願い1</button><br></div>
+        <div class="go"><button class="button" onclick="pattern2()">日程調整のお願い2</button><br></div>
+        <div class="go"><button class="button" onclick="pattern3()">日程調整返信1</button><br></div>
+        <div class="go"><button class="button" onclick="pattern4()">日程調整返信2</button><br></div>
+        <div class="go"><button class="button" onclick="pattern5()">面接のお礼1</button><br></div>
+        <div class="go"><button class="button" onclick="pattern6()">面接のお礼2</button><br>
+        <br><br></div>
+        <div class="back"><button class="button2" onclick="location.href='pattern.html'">戻る</button><br></div>
+    </div>
+
+<!-- メール編集 -->
+    <div id='edit' style="display:none">
+        <h1 id ="situation"></h1>
+        <form name="targetForm"> 
+         <div>
+           <input type="text" id = "title" value ="" size="29"><br>
+             <textarea id ="naiyou" input type="text" name="inputArea" rows="20" cols="38"></textarea>
+             <!-- <button name="copy1">コピーする</button> -->
+         </div>
+        </form>
+        
+        <!-- ボタン -->
+        <input type='hidden' id='hidden_data' value='送信したい情報をここに記載'>
+        <button class="button3" onclick="kopi()">コピー</button>
+        <button class="button4" id="makemail" onclick="sakusei()">メール作成</button><br><br>
+        <div class="back"><button class="button2" onclick="modoru()">戻る</button><br></div>
+    </div>
+    
+     <!-- ボタン -->
+     <div class="back"><button class="menubutton" onclick="location.href='index.html'">メニューへ戻る</button></div>
+     <script>
+         var bamen = document.getElementById("bamen");
+         var edit = document.getElementById("edit");
+        
+        //パターン1
+        function pattern1(){
+            slpt = "menreq1";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+
+        //パターン2
+        function pattern2(){
+            slpt = "menreq2";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+        
+        //パターン2
+        function pattern3(){
+            slpt = "menrep1";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+
+        //パターン4
+        function pattern4(){
+            slpt = "menrep2";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+
+        //パターン5
+        function pattern5(){
+            slpt = "menthan1";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+
+        //パターン6
+        function pattern6(){
+            slpt = "menthan2";
+            var script = document.createElement("script");
+            script.src = "hensyu.js";
+            document.body.appendChild(script);
+            disp();
+        }
+
+        //編集画面を表示
+        function  disp(){
+            bamen.style.display="none"; 
+            edit.style.display="block";
+        }
+
+        //パターン選択画面へ戻る
+        function modoru(){
+            bamen.style.display="block"; 
+            edit.style.display="none";
+        }
+
+        //メール作成機能
+        function sakusei() {
+          var script = document.createElement("script");
+          script.src = "sakusei.js";
+          document.body.appendChild(script);
+        }
+
+        //コピー機能
+        function kopi() {
+          var script = document.createElement("script");
+          script.src = "kopi.js";
+          document.body.appendChild(script);
+        }
+        // 面接のテンプレート引用元　　https://tenshoku.mynavi.jp/knowhow/caripedia/49#section16        
+
+    </script>
+</body>
+</html>

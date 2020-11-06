@@ -1,0 +1,24 @@
+/* This is a CSS file */
+
+h1{
+  font-size: 11vw;
+}
+
+h2{
+  font-size: 10vw;
+}
+
+button{
+  font-size: 6vw;
+  font-weight: bold;
+  width: 70%;
+}
+
+.wo{
+  line-height: 17vw;
+  text-align: center;
+}
+
+.button2{
+  width: 28%;
+}

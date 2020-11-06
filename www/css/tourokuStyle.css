@@ -1,0 +1,56 @@
+/* This is a CSS file */
+
+body{
+  background: linear-gradient(315deg, white, aqua);
+  font-size: 3vw;
+  line-height: 5vw;
+}
+
+.form2 {
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+    width: 200px;
+}
+
+h2{
+  font-size: 7vw;
+}
+
+input.ame{
+  width: 80vw;
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  font-size: 4vw;
+}
+
+.ume{
+  text-align: center;
+}
+
+.err {
+    color: red;
+    font-size: 5vw;
+    text-align: center;
+    line-height: 10vw;
+}
+
+.eme{
+  text-align: center;
+  line-height: 30vw;
+}
+
+.button2{
+  font-size: 8vw;
+  font-weight: bold;
+}
+
+.kekka{
+  font-size: 5vw;
+  line-height: 15vw;
+}
+
+.menubutton{
+  font-size: 5vw;
+  font-weight: bold;
+}

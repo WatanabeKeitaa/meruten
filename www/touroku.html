@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <link rel="stylesheet" href="components/loader.css">
+    <!-- <link rel="stylesheet" href="css/style.css">  -->
+    <link rel="stylesheet" href="css/tourokuStyle.css">
+    <script src="components/loader.js"></script>
+    <script>
+        var storage = localStorage;
+//localStorageのキーワード(合言葉：qa01)
+var keyword = "qa01";
+ //クイズリスト(仮データ)
+var kariData = [
+  "","","","","",""
+];
+//単語リスト(空の配列)
+var qaList = [];
+// qaList = kariData;
+
+ //ローカルストレージからデータを取得する
+var strData = storage.getItem(keyword);
+qaList = JSON.parse(strData);
+
+// if(qaList === null){
+//   qaList = kariData;
+// }else{
+//   document.getElementById("name3")= qaList[0];
+//   document.getElementById("school3")= qaList[1];
+//   document.getElementById("gakubu3")= qaList[2];
+//   document.getElementById("nen3")= qaList[3];
+//   document.getElementById("tel3")= qaList[4];
+//   document.getElementById("maadd3")= qaList[5];
+// }
+
+// var name3 = qaList[0];
+// var school3 = qaList[1];
+// var gakubu3 = qaList[2];
+// var nen3 = qaList[3];
+// var tel3 = qaList[4];
+// var maadd3 = qaList[5];
+
+    </script>
+</head>
+<body>
+    
+    <div id="nyuuryoku"> 
+        <h1 id ="situation"></h1>
+        <form name="form2" >
+            <h2>氏名</h2>
+            <div class="ume"><input type="text" id = "name" size="29" placeholder="就活芽瑠" class="ame"><br></div>
+            <!-- <h2>フリガナ</h2>
+            <input type="text" id = "furi" value ="" size="29" placeholder="シュウカツメル" class="ame"><br> -->
+            <h2>学校名</h2>
+            <div class="ume"><input type="text" id = "school" size="29" placeholder="メルてん大学" class="ame"><br></div>
+            <h2>学部・学科名</h2>
+            <div class="ume"><input type="text" id = "gakubu"  size="29" placeholder="就活研究部就活文書研究科" class="ame"><br></div>
+            <h2>学年</h2>
+            <div class="ume"><input type="text" id = "nen" size="29" placeholder="3" class="ame"><br></div>
+            <h2>電話番号「-(ハイフン)あり」</h2>
+            <div class="ume"><input type="text" id = "tel" size="29" placeholder="090-xxxx-xxxx" class="ame"><br></div>
+            <h2>メールアドレス</h2>
+            <div class="ume"><input type="text" id = "maadd" size="29" placeholder="welcome!@xxx.xx.xxx" class="ame"><br></div>
+            <!-- <h2>郵便番号</h2>
+            <input type="text" id = "no" value ="" size="29" placeholder="000-0000"><br>
+            <h2>住所</h2>
+            <input type="text" id = "live" value ="" size="29" placeholder="東京都△△区□□xxxx"><br><br><br> -->
+            </textarea>
+        </form>
+    
+     <div class="err" id="err2" style="display:none;">入力されていない項目があります。</div>
+    <div class="eme"><button class="button2" onclick="touroku()">登録</button><br></div>
+        
+    </div>
+
+    <div id="kakunin">
+      <h2>確認画面</h2>
+      <div id="nameHyouji" class="kekka"></div>
+      <!-- <div id="furiHyouji"></div> -->
+      <div id="schHyouji" class="kekka"></div>
+      <div id="gakkaHyouji" class="kekka"></div>
+      <div id="nenHyouji" class="kekka"></div>
+      <div id="telHyouji" class="kekka"></div>
+      <div id="mailHyouji" class="kekka"></div>
+    </div>
+     <button class="menubutton" onclick="location.href='index.html'">メニューへ戻る</button>
+     <script>
+       if(qaList === null){
+  qaList = kariData;
+}else{
+  document.getElementById("name").value= qaList[0];
+  document.getElementById("school").value= qaList[1];
+  document.getElementById("gakubu").value= qaList[2];
+  document.getElementById("nen").value= qaList[3];
+  document.getElementById("tel").value= qaList[4];
+  document.getElementById("maadd").value= qaList[5];
+}
+       kakunin.style.display="none";
+
+        function touroku(){
+      
+        var name2 = document.getElementById("name").value;
+        var school2 = document.getElementById("school").value;
+        var gakubu2 = document.getElementById("gakubu").value;
+        var nen2 = document.getElementById("nen").value;
+        var tel2 = document.getElementById("tel").value;
+        var maadd2 = document.getElementById("maadd").value;
+
+        //未入力がないかの判定
+        if(name2=="" || school2=="" || gakubu2=="" || nen2=="" ||tel2=="" || maadd2==""){
+          err2.style.display="block";
+          exit;
+        }
+
+        //ローカルストレージの設定
+        var storage = localStorage;
+        //localStorageのキーワード(合言葉：qa01)
+        var keyword = "qa01";
+        //リスト(仮データ)
+        var kariData = [
+          name2,school2,gakubu2,nen2,tel2,maadd2
+        ];
+        //単語リスト(空の配列)
+        var qaList = [];
+        qaList = kariData;
+        //ローカルストレージに保存する(初期データ)
+        strData = JSON.stringify(qaList);
+        storage.setItem(keyword, strData);
+        //ローカルストレージからデータを取得する
+        strData = storage.getItem(keyword);
+        qaList = JSON.parse(strData);
+
+        document.getElementById("nameHyouji").innerHTML = "氏名:&emsp;&emsp;&emsp;&emsp;&emsp;"+qaList[0];
+        document.getElementById("schHyouji").innerHTML = "学校名:&emsp;&emsp;&emsp;&emsp;"+qaList[1];
+        document.getElementById("gakkaHyouji").innerHTML = "学部・学科名:&emsp;"+qaList[2];
+        document.getElementById("nenHyouji").innerHTML = "学年:&emsp;&emsp;&emsp;&emsp;&emsp;"+qaList[3];
+        document.getElementById("telHyouji").innerHTML = "電話番号:&emsp;&emsp;&emsp;"+qaList[4];
+        document.getElementById("mailHyouji").innerHTML = "メールアドレス:"+qaList[5];
+
+
+        nyuuryoku.style.display="none";
+        kakunin.style.display="block";
+        err2.style.display="none";
+      }
+    </script>
+</body>
+</html>

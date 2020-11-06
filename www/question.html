@@ -1,0 +1,453 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/question.css">
+    <script src="components/loader.js"></script>
+    <!-- レーダーチャーーートのやつ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script>
+      //ニフクラの接続
+      var ncmb = new NCMB("964d439075885109afedbc4265a3da82376e409a8010ea80bebc2c53c8437d07","04b59a520cd34b0dd6d6b73a217aaaafe50f11d88d1c0a6ea2533f916eb156cd");
+      var Store = ncmb.DataStore("testdata");
+      // 問題番号
+      var no = 0;
+      //○の記録用、○に回答が来たら＋１する
+      var toi0_m = 0;
+      var toi1_m = 0;
+      var toi2_m = 0;
+      var toi3_m = 0;
+      var toi4_m = 0;
+      //×の記録用、×に回答が来たら＋１する
+      var toi0_b = 0;
+      var toi1_b = 0;
+      var toi2_b = 0;
+      var toi3_b = 0;
+      var toi4_b = 0;
+      //レーダーチャートが5つ項目あるので項目分変数を用意します
+      //これに「みんな」の値を入れます、今のところ平均です
+      //項目が決まったら、変数名を項目の名前にします
+      var a = 0;
+      var b = 0;
+      var c = 0;
+      var d = 0;
+      var e = 0;
+      //レーダーチャートが5つ項目あるので項目分変数を用意します
+      //これに「あなた」の値を入れます、今のところ平均です
+      //項目が決まったら、変数名を項目の名前にします　12/10これ変えるテストの項目名にする
+      // var anata0 = 0;
+      // var anata1 = 0;
+      // var anata2 = 0;
+      // var anata3 = 0;
+      // var anata4 = 0;
+      //てすと　項目5つ
+      var mazime = 0;
+      var sensai = 0;
+      var daitan = 0;
+      var syakou = 0;
+      var kinben = 0;
+      //けっかめっせーじ
+      var kekkamessage;
+      var kekkagazou;
+      //問題リスト配列
+      var Qmazime = [
+        { question: "困っている人を見ると、助けたくなる"},
+        { question: "時間がかかっても正確にやり遂げたい"},
+        { question: "用心深く、色々なことを心配してしまう"},
+        { question: "人付き合いが好き"},
+        { question: "人の悩み事に共感しやすい"}
+      ];
+      var Qsensai = [
+        { question: "人の行動や言動を批判的に捉えてしまうことが多い"},
+        { question: "自宅、自分の部屋が常に整理されている"},
+        { question: "人混みは苦手だ"},
+        { question: "物を作ったり、楽器を演奏することが好き"},
+        { question: "ルールや決められたことは必ず守る"}
+      ];
+      var Qdaitan = [
+        { question: "相手からのメールやLINEの返信が遅いと不安だ"},
+        { question: "他人のことを羨ましく思うことが多い"},
+        { question: "経験よりも想像に頼る"},
+        { question: "周りの意見に流されやすい"},
+        { question: "自分から話しかけることが多い"}
+      ];
+      var Qsyakou = [
+        { question: "初対面の人とも会話が弾む"},
+        { question: "人付き合いが好き"},
+        { question: "1人で過ごすより、大勢で過ごしたほうが良い"},
+        { question: "他人から親しみやすいタイプだと言われることが多い"},
+        { question: "休日は1人でいるより友人といることが多い"}
+      ];
+      var Qkinben = [
+        { question: "物事には白黒はっきりつけたい"},
+        { question: "時間がかかっても正確にやり遂げたい"},
+        { question: "1度決めた目標は達成したい"},
+        { question: "哲学的なことをよく考える"},
+        { question: "会話の時は次々と話題を変える"}
+      ];
+      // 困っている人を見ると、助けたくなる
+      // 時間がかかっても正確にやり遂げたい
+      // 用心深く、色々なことを心配してしまう
+      // 人付き合いが好き
+      // 会話の時は次々と話題を変える
+      //10
+      // 人の悩み事に共感しやすい
+      // 休日は1人でいるより友人といることが多い
+      // 人混みは苦手だ
+      // 1度決めた目標は達成したい
+      // 周りの意見に流されやすい
+      // 締め切りギリギリに課題を終わらせることが多い
+      // 物事には白黒はっきりつけたい
+      // 物を作ったり、楽器を演奏することが好き
+      // 自分から話しかけることが多い
+      // 自宅、自分の部屋が常に整理されている
+      //20
+      // 気分が変わりやすいほうだ
+      // 他人のことを羨ましく思うことが多い
+      // 相手からのメールやLINEの返信が遅いと不安だ
+      // 哲学的なことをよく考える
+      // 1人で過ごすより、大勢で過ごしたほうが良い
+      // 経験よりも想像に頼る
+      // 他人の考えることをよく心配してしまう
+      // ルールや決められたことは必ず守る
+      // 他人から親しみやすいタイプだと言われることが多い
+      // 人の行動や言動を批判的に捉えてしまうことが多い
+      //30
+      //自分自身に絶対譲れないルールがある
+
+
+
+      //スタート画面→回答画面の遷移
+      function start(){
+        document.getElementById("start").style.display ="none";
+        document.getElementById("question").style.display ="block";
+        document.getElementById("button1").style.display ="block";
+        document.getElementById("button2").style.display ="block";
+        document.getElementById("mise").style.display ="none";
+        //とりあえず「真面目」の項目からスタート
+        //らんだむで0~4出す　レーダーチャートの項目5個分
+        var startrandom = Math.floor( Math.random() * 5 ) ;
+        document.getElementById("question").innerHTML = Qmazime[startrandom].question;
+      }
+
+
+
+      //ランダムで問題選ぶことにした
+      //選択結果記録用、○の時
+      function maru(){
+        //らんだむで0~4出す　レーダーチャートの項目5個分
+        var random = Math.floor( Math.random() * 5 ) ;
+
+        if(no < Qmazime.length){
+          if(no < Qmazime.length){
+            if(no == 0){
+              //どっちに回答したかを記録する
+              toi0_m++;
+              //回答したら項目に数を足します。真面目さ　とか
+              mazime += 63;
+              //-1からスタートしてるので0番目に限り+1しています
+              no++;
+              //Qsensaiのランダム番目を表示
+              document.getElementById("question").innerHTML = Qsensai[random].question;
+            }else if(no == 1){
+              //どっちに回答したかを記録する
+              toi1_m++;
+              //回答したら「あなた」の項目に数を足します。
+              sensai += 52;
+              //配列の2番目を表示
+              no++;
+              //Qdaitanのランダム番目を表示
+              document.getElementById("question").innerHTML = Qdaitan[random].question;
+            }else if(no == 2){
+              //どっちに回答したかを記録する
+              toi2_m++;
+              //回答したら「あなた」の項目に数を足します。
+              daitan += 57;
+              //配列の3番目を表示
+              no++;
+              document.getElementById("question").innerHTML = Qsyakou[random].question;
+            }else if(no == 3){
+              //どっちに回答したかを記録する
+              toi3_m++;
+              //回答したら「あなた」の項目に数を足します。
+              syakou += 61;
+              //配列の4番目を表示
+              no++;
+              document.getElementById("question").innerHTML = Qkinben[random].question;
+            }else{
+              //どっちに回答したかを記録する
+              toi4_m++;
+              //回答したら「あなた」の項目に数を足します。
+              kinben += 64;
+
+              //どっちに回答したかをニフクラに登録する
+              new Store()
+              .set("m_toi0",toi0_m)
+              .set("b_toi0",toi0_b)
+              .set("m_toi1",toi1_m)
+              .set("b_toi1",toi1_b)
+              .set("m_toi2",toi2_m)
+              .set("b_toi2",toi2_b)
+              .set("m_toi3",toi3_m)
+              .set("b_toi3",toi3_b)
+              .set("m_toi4",toi4_m)
+              .set("b_toi4",toi4_b)
+              .save();
+
+              //計算するやつ呼び出します
+              test();
+              //結果メッセージと画像を選択するやつを呼び出します
+              kekka();
+
+              //問題なくなった時に結果画面表示する
+              //少ない行数で書こうとしたらうまく表示されなかったから長い
+              document.getElementById("StartMenu").style.display="none";
+              document.getElementById("title").innerHTML = "診断結果";
+              document.getElementById("question").style.display ="none";
+              document.getElementById("button1").style.display ="none";
+              document.getElementById("button2").style.display ="none";
+              document.getElementById("resultMessage").innerHTML = kekkamessage;
+              document.getElementById("resultMessage").style.display ="block";
+              document.getElementById("Restart").style.display ="block";
+              document.getElementById("Menu").style.display ="block";
+              document.getElementById("resultImage").style.display = "block";
+              }
+            }else{
+              //問題ないとき(まず出ない)
+              alert("問題がありません");
+          }
+        }
+      }
+
+      //選択結果記録用、×の時
+      function batu(){
+        //らんだむで0~4出す　レーダーチャートの項目5個分
+        var random = Math.floor( Math.random() * 5 ) ;
+
+        if(no < Qmazime.length){
+          //次の問題がある場合は問題を表示、登録する
+          if(no < Qmazime.length){
+            if(no == 0){
+              //どっちに回答したかを記録する
+              toi0_b++;
+              //mazimeリストの回答を×にしたときはdaitanに+50します
+              daitan += 40;
+              //1問目で×されるとmazimeが0になっちゃったので足した
+              mazime += 32;
+              //-1からスタートしてるので0番目に限り+1しています
+              no++;
+              //配列の1番目(0番目じゃないよ)を表示
+              document.getElementById("question").innerHTML = Qsensai[random].question;
+            }else if(no == 1){
+              //どっちに回答したかを記録する
+              toi1_b++;
+              //sensaiリストの回答を×にしたときはsyakouに+50します
+              syakou += 34;
+              sensai += 24
+              //配列の2番目を表示
+              no++;
+              document.getElementById("question").innerHTML = Qdaitan[random].question;
+            }else if(no == 2){
+              //どっちに回答したかを記録する
+              toi2_b++;
+              //daitanリストの回答を×にしたときはkinbenに+50します
+              kinben += 32;
+              daitan += 24;
+              //配列の3番目を表示
+              no++;
+              document.getElementById("question").innerHTML = Qsyakou[random].question;
+            }else if(no == 3){
+              //どっちに回答したかを記録する
+              toi3_b++;
+              //syakouリストの回答を×にしたときはにmazime+50します
+              mazime += 35;
+              syakou += 34
+              //配列の4番目を表示
+              no++;
+              document.getElementById("question").innerHTML = Qkinben[random].question;
+            }else{
+              //どっちに回答したかを記録する
+              toi4_b++;
+              //kinbenリストの回答を×にしたときはにsensai+50します
+              sensai += 36;
+              kinben += 28;
+              //どっちに回答したかをニフクラに登録する
+              new Store()
+              .set("m_toi0",toi0_m)
+              .set("b_toi0",toi0_b)
+              .set("m_toi1",toi1_m)
+              .set("b_toi1",toi1_b)
+              .set("m_toi2",toi2_m)
+              .set("b_toi2",toi2_b)
+              .set("m_toi3",toi3_m)
+              .set("b_toi3",toi3_b)
+              .set("m_toi4",toi4_m)
+              .set("b_toi4",toi4_b)
+              .save();
+
+              //計算するやつ呼び出します
+              test();
+              //結果メッセージと画像を選択するやつを呼び出します
+              kekka();
+              //問題なくなった時に結果画面表示する
+              //少ない行数で書こうとしたらうまく表示されなかったから長い
+              document.getElementById("StartMenu").style.display="none";
+              document.getElementById("title").innerHTML = "診断結果";
+              document.getElementById("question").style.display ="none";
+              document.getElementById("button1").style.display ="none";
+              document.getElementById("button2").style.display ="none";
+              document.getElementById("resultMessage").innerHTML = kekkamessage;
+              document.getElementById("resultMessage").style.display ="block";
+              document.getElementById("Restart").style.display ="block";
+              document.getElementById("Menu").style.display ="block";
+              document.getElementById("resultImage").style.display = "block";
+
+              
+              }
+            }else{
+              //問題ないとき(まず出ない)
+              alert("問題がありません");
+          }
+        }
+      }
+
+      //みんなの平均計算とレーダーチャート表示
+      function test(){
+        Store.fetchAll()
+        .then(function (results){
+          //全部のデータから平均を出します
+          //まず合計を計算します
+          //ここは適当に入れる変数とか掛ける数とか変えれば色々値が変わります
+          for(var i=0; i< results.length; i++){
+            a += results[i].m_toi0 * 30;
+            b += results[i].b_toi0 * 30;
+            c += results[i].m_toi1 * 30;
+            d += results[i].b_toi1 * 30;
+            e += results[i].m_toi2 * 30;
+            a += results[i].b_toi2 * 30;
+            b += results[i].b_toi3 * 30;
+            c += results[i].m_toi3 * 30;
+            d += results[i].b_toi4 * 30;
+            e += results[i].m_toi4 * 30;
+          }
+          //個数で割ってます
+          //グラフの最大値が100ですが、それを超えたら知りません
+          a /= results.length;
+          b /= results.length;
+          c /= results.length;
+          d /= results.length;
+          e /= results.length;
+          //小数点以下を切り捨てます
+          a = Math.round(a);
+          b = Math.round(b);
+          c = Math.round(c);
+          d = Math.round(d);
+          e = Math.round(e);
+
+          var ctx = document.getElementById("myRaderChart");
+              var myRadarChart = new Chart(ctx, {
+                  type: 'radar', 
+                  data: { 
+                    //性格診断の項目決まったら入れる
+                      labels: ["真面目", "繊細", "大胆", "社交性", "勤勉"],
+                      datasets: [{
+                          label: 'あなた',
+                          //ここに性格診断やった人のデータ入れる
+                          //本番用に変数にすること
+                          // data: [92, 72, 86, 74, 86],
+                          //↓本番用の変数入れたテスト
+                          data: [mazime, sensai, daitan, syakou, kinben],
+                          backgroundColor: 'RGBA(225,95,150, 0.5)',
+                          borderColor: 'RGBA(225,95,150, 1)',
+                          borderWidth: 1,
+                          pointBackgroundColor: 'RGB(46,106,177)'
+                      }, {
+                          label: 'みんな',
+                          //ここに平均ののデータ？入れる
+                          //↓本番用
+                          data: [a, b, c, d, e],
+                          backgroundColor: 'RGBA(115,255,25, 0.5)',
+                          borderColor: 'RGBA(115,255,25, 1)',
+                          borderWidth: 1,
+                          pointBackgroundColor: 'RGB(46,106,177)'
+                      }]
+                  },
+                  options: {
+                      title: {
+                          display: true,
+                          text: '診断結果'
+                      },
+                      scale:{
+                          ticks:{
+                            // 軸の最小値
+                              suggestedMin: 0,
+                              // 軸の最大値
+                              suggestedMax: 100,
+                              // 軸の刻み幅
+                              stepSize: 10,
+                              // 軸のラベル
+                              callback: function(value, index, values){
+                                  return  value +  '点'
+                              }
+                          }
+                      }
+                  }
+              });
+        });
+      }
+
+      function kekka(){
+        var kekka = [mazime,sensai,daitan,syakou,kinben];
+        var check = Math.max.apply(null, kekka);
+        //脳死if文判定
+        if(check == mazime){
+          kekkamessage = "あなたは真面目なコツコツタイプ";
+          document.getElementById("resultImage").src = "mazime.png";
+        }else if(check == sensai){
+          kekkamessage = "あなたは多感な繊細タイプ";
+          document.getElementById("resultImage").src = "sensai.png";
+        }else if(check == daitan){
+          kekkamessage = "あなたは大胆な積極的タイプ";
+          document.getElementById("resultImage").src = "sekkyokuteki.png";
+        }else if(check == syakou){
+          kekkamessage = "あなたは明るい社交的タイプ";
+          document.getElementById("resultImage").src = "akarui.png";
+        }else if(check == kinben){
+          kekkamessage = "あなたはしっかり勤勉タイプ";
+          document.getElementById("resultImage").src = "kinben.png";
+        }
+      }
+
+    </script>
+</head>
+<body>
+    <!-- タイトル -->
+    <Q_title id="title" style="display:block" class="tai">Question?</Q_title>
+    <br>
+    <!-- スタート画面ボタン -->
+    <table style="margin-left : auto ; margin-right : auto ;"><tr><td><button id="start" onclick="start()" style="display:block" class="kaisi" >問題開始</button></td></tr></table> 
+    <!-- // <td>までと</td>からでボタンの位置を変えています。 -->
+    <div class="rare"><div class="mise" id="mise" style="display:block"><img src="picture/miserarenaiyo.png"></div></div>
+    <!-- 問題文 -->
+    <div id="question" style="display:none" class="mon"></div>
+    <!-- ボタンです -->
+    <button id="button1" onclick="maru()" style="display:none;wight:45%;height:45%" class="mondai"><img src="picture/maru.png"></button>
+    <button id="button2" onclick="batu()" style="display:none;wight:45%;height:45%" class="nitaku"><img src="picture/batu.png"></button><br>
+    <div class="kaijyo"></div>
+    <!-- cssの解除用にに作った空のものです -->
+    <div class="sita"><button id="StartMenu" class="menubutton" onclick="location.href='index.html'"style="display:block">メニューへ戻る</button></div>
+
+    <!-- 結果表示画面 -->
+    <img id="resultImage" src="" style="display:none">
+    <div id="resultMessage" style="display:none" class="mon"></p></div>
+    <div id="Message1"></p></div>
+    <!-- レーダーチャート -->
+    <canvas id="myRaderChart" style="width:10px;height:10px"></canvas>
+    
+    <table class="o"><tr><td><button id="Restart" href="question.html" onclick="location.href='question.html'"style="display:none" class="risu">リスタート</button></td></tr></table>
+    <table class="e"><tr><td><button id="Menu" class="menubutton" onclick="location.href='index.html'"style="display:none">メニューへ戻る</button></td></tr></table>
+</body>
+</html>
